@@ -1,0 +1,6 @@
+spring: 
+   datasource:
+     url: jdbc:sqlserver://QA-SQL-01:1433;databasename=qa_bpm_002;encrypt=true;trustServerCertificate=true;
+     username: ProcessSuiteAdmin
+     password: SQL|0gi^
+     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
