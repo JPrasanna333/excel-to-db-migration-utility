@@ -1,15 +1,22 @@
 package com.countryspecifc.utility.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +24,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="SHRDNPDLookUpDomainModelTasks_Details")
+@Table(name="shrdnpdlookupdomainmodeltasks_details")
 public class TaskDetails {
 
 	@OneToOne
@@ -30,6 +37,35 @@ public class TaskDetails {
 	
 	@Column(name="TaskSequence")
 	private Integer taskSequence;
+	
+	@Column(name="R_PO_RM_ROLE_Id")
+	private Group rmRoleId;
+	
+	@Column(name="R_PO_TASK_OWNER_ROLE_Id")
+	private Group taskRoleId;
+	
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinTable(name = "shrdnpdlookupdomainmodeltasks_detailstask_template",
+            joinColumns = {
+                    @JoinColumn(name = "TASKS_DETAILID979B2426C2669354", referencedColumnName = "Id",
+                            nullable = false, updatable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "Task_Template_Id",referencedColumnName = "Id",
+                            nullable = false, updatable = false)})
+    private Set<TaskTemplate> predecessorTaskList = new HashSet<TaskTemplate>();
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinTable(name = "SHRDNPDLookUpDomainModelTasks_DetailsTask_Template983",
+            joinColumns = {
+                    @JoinColumn(name = "TASKS_DETAILID96EB29F05DE824E8", referencedColumnName = "Id",
+                            nullable = false, updatable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "Task_Template_Id",referencedColumnName = "Id",
+                            nullable = false, updatable = false)})
+    private Set<TaskTemplate> primaryDependentTaskList = new HashSet<TaskTemplate>();
 	
 	
 }
