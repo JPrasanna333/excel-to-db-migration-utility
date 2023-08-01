@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -27,7 +28,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="SHRDNPDLookUpDomainModelProject_Classification")
+@Table(name="shrdnpdlookupdomainprojectclassification")
 public class ProjectClassification {
 
 	@Id
@@ -69,15 +70,14 @@ public class ProjectClassification {
     private Region region;
 	
 	
-	
 	@ManyToMany(fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
-    @JoinTable(name = "SHRDNPDLookUpDomainModelTasks_Details",
+    @JoinTable(name = "shrdnpdlookupdomainmodelproject_classificationtasks_details",
             joinColumns = {
-                    @JoinColumn(name = "REQUESTIDB93C56419157993C", referencedColumnName = "Id",
+                    @JoinColumn(name = "PROJECT_CLASID83F7D33723BC5560", referencedColumnName = "Id",
                             nullable = false, updatable = false)},
             inverseJoinColumns = {
-                    @JoinColumn(name = "governance_milestone_id",referencedColumnName = "Id",
+                    @JoinColumn(name = "Tasks_Details_Id",referencedColumnName = "Id",
                             nullable = false, updatable = false)})
     private Set<TaskDetails> taskList = new HashSet<TaskDetails>();
 	
