@@ -4,3 +4,4 @@ spring:
      username: ProcessSuiteAdmin
      password: SQL|0gi^
      driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+     

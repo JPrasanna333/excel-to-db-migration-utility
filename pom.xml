@@ -9,8 +9,8 @@
 		<version>2.7.14</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.npd.countryspecific</groupId>
-	<artifactId>countryspecific</artifactId>
+	<groupId>com.npd</groupId>
+	<artifactId>CountrySpecificUtility</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>CountrySpecificUtility</name>
