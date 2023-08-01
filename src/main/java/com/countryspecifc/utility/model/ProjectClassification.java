@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -70,15 +71,8 @@ public class ProjectClassification {
 	
 	
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
-    @JoinTable(name = "SHRDNPDLookUpDomainModelTasks_Details",
-            joinColumns = {
-                    @JoinColumn(name = "REQUESTIDB93C56419157993C", referencedColumnName = "Id",
-                            nullable = false, updatable = false)},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "governance_milestone_id",referencedColumnName = "Id",
-                            nullable = false, updatable = false)})
     private Set<TaskDetails> taskList = new HashSet<TaskDetails>();
 	
 	
