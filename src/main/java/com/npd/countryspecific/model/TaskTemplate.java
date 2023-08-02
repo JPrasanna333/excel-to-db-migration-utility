@@ -15,7 +15,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="shrdnpdlookupdomainmodeltask_template")
+//@Table(name="shrdnpdlookupdomainmodeltask_template")
+@Table(name="o4npdlookupdomainmodeltask_template")
 public class TaskTemplate {
 
 	@Id
