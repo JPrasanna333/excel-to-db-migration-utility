@@ -77,7 +77,7 @@ public class ProjectClassification {
             inverseJoinColumns = {
                     @JoinColumn(name = "Tasks_Details_Id",referencedColumnName = "Id",
                             nullable = false, updatable = false)})
-    private Set<TaskDetails> taskList = new HashSet<TaskDetails>();
+    private Set<TasksDetails> taskList = new HashSet<TasksDetails>();
 	
 	
 	

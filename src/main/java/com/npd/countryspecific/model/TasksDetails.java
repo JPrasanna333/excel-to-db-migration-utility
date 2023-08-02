@@ -27,7 +27,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="shrdnpdlookupdomainmodeltasks_details")
-public class TaskDetails {
+public class TasksDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Id")
@@ -44,11 +44,11 @@ public class TaskDetails {
 	@Column(name="TaskSequence")
 	private Integer taskSequence;
 	
-//	@Column(name="R_PO_RM_ROLE_Id")
-//	private Group rmRoleId;
-//	
-//	@Column(name="R_PO_TASK_OWNER_ROLE_Id")
-//	private Group taskRoleId;
+	@Column(name="R_PO_RM_ROLE_Id")
+	private Integer rmRoleId;
+	
+	@Column(name="R_PO_TASK_OWNER_ROLE_Id")
+	private Integer taskRoleId;
 	
 	
 	@ManyToMany(fetch = FetchType.LAZY)
