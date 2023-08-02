@@ -35,7 +35,7 @@ public class ProjectClassification {
 	private Integer id;
 	
 	@Column(name="ProjectClassificationNumber")
-	private Integer projectClassificationNumber;
+	private String projectClassificationNumber;
 	
 	
 	@Column(name="ProjectClassificationDescription")

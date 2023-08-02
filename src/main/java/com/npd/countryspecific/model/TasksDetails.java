@@ -35,8 +35,8 @@ public class TasksDetails {
 
 	@OneToOne
     @Fetch(FetchMode.JOIN)
-    @JoinColumn(name = "R_PO_TASK_Id", referencedColumnName = "Id", insertable = false, updatable = false)
-    private ProjectType TaskTemplate;
+    @JoinColumn(name = "R_PO_TASK_Id", referencedColumnName = "Id", insertable = true, updatable = false)
+    private TaskTemplate TaskTemplate;
 	
 	@Column(name="Duration")
 	private Integer duration;

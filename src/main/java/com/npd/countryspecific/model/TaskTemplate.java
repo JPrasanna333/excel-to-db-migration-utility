@@ -1,11 +1,7 @@
 package com.npd.countryspecific.model;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -22,29 +18,29 @@ public class TaskTemplate {
 	@Column(name = "Id")
 	private Integer id;
 	
-	@Column(name="TaskName")
+	@Column(name="taskname")
 	private String taskName;
 	
-	@Column(name="TaskDescription")
+	@Column(name="taskdescription")
 	private String taskDescription;
 	
-	@Column(name="DefaultDuration")
+	@Column(name="defaultduration")
 	private Integer defaultDuration;
 	
-	@Column(name="IsCheckPointTask")
+	@Column(name="ischeckpointtask")
 	private Boolean isCheckPointTask;
 	
-	@Column(name="IsActive")
+	@Column(name="isactive")
 	private Boolean isActive;
 	
-	@Column(name="FgOrConc")
+	@Column(name="fgorconc")
 	private String fgOrConc;
 	
 	
-	@Column(name="IsRegistrationTask")
+	@Column(name="isregistrationtask")
 	private String isRegistrationTask;
 	
-	@Column(name="IsManagerialTask")
+	@Column(name="ismanagerialtask")
 	private String isManagerialTask;
 }
 
