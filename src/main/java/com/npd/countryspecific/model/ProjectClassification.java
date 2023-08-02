@@ -26,7 +26,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="shrdnpdlookupdomainprojectclassification")
+//@Table(name="shrdnpdlookupdomainprojectclassification")
+@Table(name="o4npdlookupdomainprojectclassification")
 public class ProjectClassification {
 
 	@Id
@@ -68,11 +69,20 @@ public class ProjectClassification {
     private Region region;
 	
 	
+
+
 	@ManyToMany(fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
-    @JoinTable(name = "shrdnpdlookupdomainmodelproject_classificationtasks_details",
+//  @JoinTable(name = "shrdnpdlookupdomainmodelproject_classificationtasks_details",
+//  joinColumns = {
+//          @JoinColumn(name = "PROJECT_CLASID83F7D33723BC5560", referencedColumnName = "Id",
+//                  nullable = false, updatable = false)},
+//  inverseJoinColumns = {
+//          @JoinColumn(name = "Tasks_Details_Id",referencedColumnName = "Id",
+//                  nullable = false, updatable = false)})
+    @JoinTable(name = "o4npdlookupdomainmodelproject_classificationtasks_details",
             joinColumns = {
-                    @JoinColumn(name = "PROJECT_CLASID83F7D33723BC5560", referencedColumnName = "Id",
+                    @JoinColumn(name = "PROJECT_CLASID810D5EBEB9CF8AB5", referencedColumnName = "Id",
                             nullable = false, updatable = false)},
             inverseJoinColumns = {
                     @JoinColumn(name = "Tasks_Details_Id",referencedColumnName = "Id",

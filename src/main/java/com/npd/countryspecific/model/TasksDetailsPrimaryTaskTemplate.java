@@ -14,21 +14,22 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-//@Table(name = "shrdnpdlookupdomainmodelprojectclassificationtasks_details")
-@Table(name = "o4npdlookupdomainmodelprojectclassificationtasks_details")
-public class ProjectClassificationTasksDetails {
+//@Table(name = "SHRDNPDLookUpDomainModelTasks_DetailsTask_Template983")
+@Table(name = "o4NPDLookUpDomainModelTasks_DetailsTask_Template559")
+public class TasksDetailsPrimaryTaskTemplate {
 	
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "PROJECT_CLASID83F7D33723BC5560")
-    @JoinColumn(name = "PROJECT_CLASID810D5EBEB9CF8AB5")
-	private ProjectClassification projectClassification;
+//    @JoinColumn(name = "Tasks_DetailId96EB29F05DE824E8")
+	@JoinColumn(name = "TASKS_DETAILID9670E172181B4E7C")
+	private TasksDetails taskDetail;
 	
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Tasks_Details_Id")
-	private TasksDetails taskDetails;
+    @JoinColumn(name = "Task_Template_Id")
+	private TaskTemplate taskTemplate;
 	
 	@Column(name = "s_organizationid")
     private int organizationid;
+
 }

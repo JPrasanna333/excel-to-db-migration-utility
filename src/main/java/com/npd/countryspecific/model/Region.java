@@ -19,8 +19,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(name = "shrdnpdlookupdomainmodelregion")
-@Entity //o2npdlook_up_domain_model_request_type
+//@Table(name = "shrdnpdlookupdomainmodelregion")
+@Table(name = "o4npdlookupdomainmodelregion")
+@Entity 
 
 public class Region {
 
