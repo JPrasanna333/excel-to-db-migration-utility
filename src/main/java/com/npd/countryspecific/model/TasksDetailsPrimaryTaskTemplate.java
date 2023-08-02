@@ -14,20 +14,20 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(name = "shrdnpdlookupdomainmodelprojectclassificationtasks_details")
-
-public class ProjectClassificationTasksDetails {
-
+@Table(name = "SHRDNPDLookUpDomainModelTasks_DetailsTask_Template983")
+public class TasksDetailsPrimaryTaskTemplate {
+	
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Project_ClasId83F7D33723BC5560")
+    @JoinColumn(name = "Tasks_DetailId96EB29F05DE824E8")
 	private String projectClassification;
 	
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Tasks_Details_Id")
+    @JoinColumn(name = "Task_Template_Id")
 	private String taskDetails;
 	
 	@Column(name = "s_organizationid")
     private int organizationid;
+
 }

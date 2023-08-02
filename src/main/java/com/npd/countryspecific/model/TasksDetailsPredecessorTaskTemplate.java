@@ -1,6 +1,9 @@
 package com.npd.countryspecific.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -9,23 +12,21 @@ import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
-@Table(name = "shrdnpdlookupdomainmodelprojectclassificationtasks_details")
-
-public class ProjectClassificationTasksDetails {
+@Entity
+@Table(name="shrdnpdlookupdomainmodeltasks_detailstask_template")
+public class TasksDetailsPredecessorTaskTemplate {
 
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Project_ClasId83F7D33723BC5560")
+    @JoinColumn(name = "Tasks_DetailId979B2426C2669354")
 	private String projectClassification;
 	
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Tasks_Details_Id")
+    @JoinColumn(name = "Task_Template_Id")
 	private String taskDetails;
 	
 	@Column(name = "s_organizationid")
