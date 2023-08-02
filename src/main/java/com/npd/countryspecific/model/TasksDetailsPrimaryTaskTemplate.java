@@ -22,13 +22,12 @@ public class TasksDetailsPrimaryTaskTemplate {
 	@ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "Tasks_DetailId96EB29F05DE824E8")
 	@JoinColumn(name = "TASKS_DETAILID9670E172181B4E7C")
-	
-	private String taskDetail;
+	private TasksDetails taskDetail;
 	
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Task_Template_Id")
-	private String taskTemplate;
+	private TaskTemplate taskTemplate;
 	
 	@Column(name = "s_organizationid")
     private int organizationid;

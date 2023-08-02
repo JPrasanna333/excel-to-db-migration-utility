@@ -22,12 +22,12 @@ public class ProjectClassificationTasksDetails {
 	@ManyToOne(fetch = FetchType.LAZY)
 //  @JoinColumn(name = "PROJECT_CLASID83F7D33723BC5560")
     @JoinColumn(name = "PROJECT_CLASID810D5EBEB9CF8AB5")
-	private String projectClassification;
+	private ProjectClassification projectClassification;
 	
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Tasks_Details_Id")
-	private String taskDetails;
+	private TasksDetails taskDetails;
 	
 	@Column(name = "s_organizationid")
     private int organizationid;

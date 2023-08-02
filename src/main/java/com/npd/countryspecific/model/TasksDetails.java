@@ -3,6 +3,7 @@ package com.npd.countryspecific.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -19,6 +21,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+
 
 import lombok.Getter;
 import lombok.Setter;
@@ -50,6 +53,9 @@ public class TasksDetails {
 	
 	@Column(name="R_PO_TASK_OWNER_ROLE_Id")
 	private Integer taskRoleId;
+	
+	@OneToMany(mappedBy = "projectClassification", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    private Set<ProjectClassificationTasksDetails> projectClassificationTasksDetails = new HashSet<ProjectClassificationTasksDetails>();
 	
 	@ManyToMany(fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)

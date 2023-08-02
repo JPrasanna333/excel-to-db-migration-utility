@@ -1,6 +1,6 @@
 package com.npd.countryspecific.model;
 
-import java.util.Set;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,12 +24,12 @@ public class TasksDetailsPredecessorTaskTemplate {
 	@ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "Tasks_DetailId979B2426C2669354")
     @JoinColumn(name = "TASKS_DETAILIDA9B51D1974129FFD")
-	private String taskDetail;
+	private TasksDetails taskDetail;
 	
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Task_Template_Id")
-	private String taskTemplate;
+	private TaskTemplate taskTemplate;
 	
 	@Column(name = "s_organizationid")
     private int organizationid;

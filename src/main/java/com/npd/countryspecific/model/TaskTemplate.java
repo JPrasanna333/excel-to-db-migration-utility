@@ -1,12 +1,15 @@
 package com.npd.countryspecific.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
+
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -47,5 +50,11 @@ public class TaskTemplate {
 	
 	@Column(name="IsManagerialTask")
 	private String isManagerialTask;
+	
+	@OneToMany(mappedBy = "tasksDetails", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    private Set<TasksDetailsPredecessorTaskTemplate> tasksDetailsTemplates = new HashSet<TasksDetailsPredecessorTaskTemplate>();
+	
+	@OneToMany(mappedBy = "tasksDetails", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    private Set<TasksDetailsPrimaryTaskTemplate> taskPrimaryTaskTemplates = new HashSet<TasksDetailsPrimaryTaskTemplate>();
 }
 
