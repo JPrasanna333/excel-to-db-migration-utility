@@ -76,9 +76,6 @@ public class TasksDetails {
     private Set<TaskTemplate> predecessorTaskList = new HashSet<TaskTemplate>();
 	
 
-
-
-	
 	
 	@ManyToMany(fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)

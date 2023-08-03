@@ -1,24 +1,12 @@
 package com.npd.countryspecific.model;
 
-<<<<<<< .mine
-
-
-
-=======
 import java.util.HashSet;
 import java.util.Set;
 
->>>>>>> .theirs
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-<<<<<<< .mine
-
-
-=======
 import javax.persistence.FetchType;
-
->>>>>>> .theirs
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -42,24 +30,18 @@ public class TaskTemplate {
 	
 	@Column(name="taskdescription")
 	private String taskDescription;
-	
 
 	@Column(name="defaultduration")
 	private Integer defaultDuration;
 	
-	
 	@Column(name="ischeckpointtask")
 	private Boolean isCheckPointTask;
-	
 	
 	@Column(name="isactive")
 	private Boolean isActive;
 	
-	
 	@Column(name="fgorconc")
 	private String fgOrConc;
-	
-	
 
 	@Column(name="isregistrationtask")
 	private String isRegistrationTask;
@@ -68,10 +50,10 @@ public class TaskTemplate {
 	@Column(name="ismanagerialtask")
 	private String isManagerialTask;
 	
-	@OneToMany(mappedBy = "tasksDetails", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "taskDetail", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private Set<TasksDetailsPredecessorTaskTemplate> tasksDetailsTemplates = new HashSet<TasksDetailsPredecessorTaskTemplate>();
 	
-	@OneToMany(mappedBy = "tasksDetails", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "taskDetail", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private Set<TasksDetailsPrimaryTaskTemplate> taskPrimaryTaskTemplates = new HashSet<TasksDetailsPrimaryTaskTemplate>();
 }
 

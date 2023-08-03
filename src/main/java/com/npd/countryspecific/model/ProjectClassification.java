@@ -20,11 +20,11 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @Entity
 //@Table(name="shrdnpdlookupdomainprojectclassification")
 @Table(name="o4npdlookupdomainprojectclassification")
@@ -57,7 +57,6 @@ public class ProjectClassification {
 	@Column(name="SecondaryPackaging")
 	private Boolean secondaryPackaging;
 	
-	
 	@OneToOne
     @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "R_PO_PROJECT_TYPE_Id", referencedColumnName = "Id", insertable = true, updatable = false)
@@ -68,8 +67,6 @@ public class ProjectClassification {
     @JoinColumn(name = "R_PO_REGION_Id", referencedColumnName = "Id", insertable = true, updatable = false)
     private Region region;
 	
-	
-
 
 	@ManyToMany(fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
@@ -87,7 +84,7 @@ public class ProjectClassification {
             inverseJoinColumns = {
                     @JoinColumn(name = "Tasks_Details_Id",referencedColumnName = "Id",
                             nullable = false, updatable = false)})
-    private Set<TasksDetails> taskList = new HashSet<TasksDetails>();
+    private Set<TasksDetails> taskDetails = new HashSet<TasksDetails>();
 	
 	
 	
