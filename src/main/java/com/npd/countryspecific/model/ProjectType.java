@@ -17,7 +17,7 @@ import lombok.ToString;
 @ToString
 //@Table(name = "shrdnpdlookupdomainmodelproject_type")
 @Table(name = "o4npdlookupdomainmodelproject_type")
-@Entity 
+@Entity
 public class ProjectType {
 
 	@Id

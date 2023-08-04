@@ -1,41 +1,43 @@
 package com.npd.countryspecific.model;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@IdClass(PrimaryTaskTemplateId.class)
 //@Table(name = "SHRDNPDLookUpDomainModelTasks_DetailsTask_Template983")
-@Table(name = "o4NPDLookUpDomainModelTasks_DetailsTask_Template559")
-public class TasksDetailsPrimaryTaskTemplate implements Serializable  {
-	
-	private static final long serialVersionUID = 1L;
+@Table(name = "o4npdlookupdomainmodeltasks_detailstask_template391")
+public class TasksDetailsPrimaryTaskTemplate {
 
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "Tasks_DetailId96EB29F05DE824E8")
-	@JoinColumn(name = "TASKS_DETAILID9670E172181B4E7C")
+//  @JoinColumn(name = "Tasks_DetailId96EB29F05DE824E8")
+	@JoinColumn(name = "Tasks_DetailidA886B77B1F3E2202")
 	private TasksDetails taskDetail;
-	
+
 	@Id
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Task_Template_Id")
+	@JoinColumn(name = "Task_Template_Id")
 	private TaskTemplate taskTemplate;
-	
-	@Column(name = "s_organizationid")
-    private int organizationid;
+
+//	@Column(name = "s_organizationid")
+//    private int organizationid;
 
 }

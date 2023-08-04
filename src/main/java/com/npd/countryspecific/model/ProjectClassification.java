@@ -3,15 +3,15 @@ package com.npd.countryspecific.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,56 +20,57 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-//@Table(name="shrdnpdlookupdomainprojectclassification")
-@Table(name="o4npdlookupdomainprojectclassification")
+//@Table(name="shrdnpdlookupdomainmodelproject_classification")
+@Table(name = "o4npdlookupdomainmodelproject_classification")
 public class ProjectClassification {
-
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "Id")
+	@Column(name = "id")
 	private Integer id;
-	
-	@Column(name="ProjectClassificationNumber")
+
+	@Column(name = "projectclassificationnumber")
 	private String projectClassificationNumber;
-	
-	
-	@Column(name="ProjectClassificationDescription")
+
+	@Column(name = "projectclassificationdescription")
 	private String projectClassificationDescription;
-	
-	@Column(name="NewFG")
+
+	@Column(name = "newfG")
 	private Boolean newFg;
-	
-	@Column(name="NewHBC")
+
+	@Column(name = "newhbc")
 	private Boolean newHbc;
-	
-	@Column(name="NewRD")
+
+	@Column(name = "newrd")
 	private Boolean newRd;
-	
-	@Column(name="PrimaryPackaging")
+
+	@Column(name = "primarypackaging")
 	private Boolean primaryPackaging;
-	
-	@Column(name="SecondaryPackaging")
+
+	@Column(name = "secondarypackaging")
 	private Boolean secondaryPackaging;
-	
+
 	@OneToOne
-    @Fetch(FetchMode.JOIN)
-    @JoinColumn(name = "R_PO_PROJECT_TYPE_Id", referencedColumnName = "Id", insertable = true, updatable = false)
-    private ProjectType projectType;
+	@Fetch(FetchMode.JOIN)
+	@JoinColumn(name = "R_PO_PROJECT_TYPE_Id", referencedColumnName = "Id", insertable = true, updatable = false)
+	private ProjectType projectType;
+
+	@Column(name = "R_PO_REGION_Id")
+	private Integer region;
 	
-	@OneToOne
-    @Fetch(FetchMode.JOIN)
-    @JoinColumn(name = "R_PO_REGION_Id", referencedColumnName = "Id", insertable = true, updatable = false)
-    private Region region;
-	
+	@Column(name = "S_ITEM_STATUS")
+	private Integer itemStatusId;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-    @NotFound(action = NotFoundAction.IGNORE)
+	@NotFound(action = NotFoundAction.IGNORE)
 //  @JoinTable(name = "shrdnpdlookupdomainmodelproject_classificationtasks_details",
 //  joinColumns = {
 //          @JoinColumn(name = "PROJECT_CLASID83F7D33723BC5560", referencedColumnName = "Id",
@@ -77,15 +78,12 @@ public class ProjectClassification {
 //  inverseJoinColumns = {
 //          @JoinColumn(name = "Tasks_Details_Id",referencedColumnName = "Id",
 //                  nullable = false, updatable = false)})
-    @JoinTable(name = "o4npdlookupdomainmodelproject_classificationtasks_details",
-            joinColumns = {
-                    @JoinColumn(name = "PROJECT_CLASID810D5EBEB9CF8AB5", referencedColumnName = "Id",
-                            nullable = false, updatable = false)},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "Tasks_Details_Id",referencedColumnName = "Id",
-                            nullable = false, updatable = false)})
-    private Set<TasksDetails> taskDetails = new HashSet<TasksDetails>();
-	
-	
-	
+	@JoinTable(name = "o4npdlookupdomainmodelproject_classificationtasks_details", joinColumns = {
+			@JoinColumn(name = "PROJECT_CLASID810D5EBEB9CF8AB5", referencedColumnName = "Id", nullable = false, updatable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "Tasks_Details_Id", referencedColumnName = "Id", nullable = false, updatable = false) })
+	private Set<TasksDetails> taskDetails = new HashSet<TasksDetails>();
+
+	@OneToMany(mappedBy = "projectClassification", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	private Set<ProjectClassificationTasksDetails> projectClassificationTasksDetails = new HashSet<ProjectClassificationTasksDetails>();
+
 }
