@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -53,10 +51,9 @@ public class ReadExcelService {
 
 	@Value("${excel.task.endColumn}")
 	private String taskEndColumn;
-	
+
 	@Value("${com.monster.npd.org.id}")
 	private String orgId;
-	
 
 	@Autowired
 	private Environment env;
@@ -82,7 +79,7 @@ public class ReadExcelService {
 	@Autowired
 	private PrimaryTaskDetailsRepository primaryTaskDetailsRepository;
 
-	@Transactional
+//	@Transactional
 	public String readAndMigrateExcelData(String filePath) throws IOException {
 
 		try (FileInputStream fis = new FileInputStream(filePath)) {
@@ -115,13 +112,13 @@ public class ReadExcelService {
 				for (int columnIndex = startColumnIndex; columnIndex <= endColumnIndex; columnIndex++) {
 					Cell cellValue = row.getCell(columnIndex);
 					String columnName = CellReference.convertNumToColString(columnIndex);
-					projectClassification.setRegion(1);//Always EMEA in table
+					projectClassification.setRegion(1);// Always EMEA in table
 					projectClassification.setItemStatusId(1);
 					projectClassification.setOrganizationid(Integer.parseInt(orgId));
-					
+
 					if (columnName.equalsIgnoreCase("A")) {
 						regionName = cellValue.getStringCellValue();// for retrieving sheet name
-					}else if (columnName.equalsIgnoreCase("B")) {
+					} else if (columnName.equalsIgnoreCase("B")) {
 						ProjectType projectType = projectTypeRepository.findByDisplayName(cellValue.getStringCellValue());
 						projectClassification.setProjectType(projectType);
 					} else if (columnName.equalsIgnoreCase("C")) {
@@ -182,21 +179,16 @@ public class ReadExcelService {
 						} else if (cellValue.equals("Y")) {
 							isManagerialTask = false;
 							isRegTask = true;
-						} 
-						// Task 13 fg and conc duration
-						else if (columnName.equalsIgnoreCase("Y")) {
-							taskDetails.setDuration(2);
-						} else if (columnName.equalsIgnoreCase("Z")) {
-							taskDetails.setDuration(4);
 						}
+
 						System.out.println(taskName + " insertion started");
 //						System.out.println(taskDetails.getDuration());
 //						System.out.println(taskDescription);
 						final Boolean finalIsManagerialTask = isManagerialTask;
 						final Boolean finalIsRegTask = isRegTask;
 						Optional<TaskTemplate> result = taskTemplateList.stream()
-								.filter(template -> template.getTaskName().equalsIgnoreCase(taskName) 
-						                && template.getTaskDescription().equalsIgnoreCase(taskDescription)
+								.filter(template -> template.getTaskName().equalsIgnoreCase(taskName)
+										&& template.getTaskDescription().equalsIgnoreCase(taskDescription)
 										&& template.getIsManagerialTask().equals(finalIsManagerialTask)
 										&& template.getIsRegistrationTask().equals(finalIsRegTask)
 
@@ -205,13 +197,16 @@ public class ReadExcelService {
 						if (result.isPresent()) {
 							taskTemplate = result.get();
 //					            System.out.println(taskTemplate.getTaskName());
-//					            System.out.println(taskTemplate.toString());
 							Row matchedRow = getRowByCellValue(sheet, taskName, "Task Name");
 							if (matchedRow != null) {
 								maxTaskId = maxTaskId == null ? 12108001 : maxTaskId;
 								taskDetails.setId(++maxTaskId);
 								taskDetails.setTasktemplate(taskTemplate);
-								if (!taskTemplate.getTaskName().equalsIgnoreCase("TASK 13")) {
+								// Task 13 fg and conc duration
+								if (taskTemplate.getTaskName().equalsIgnoreCase("TASK 13")) {
+									int duration = taskTemplate.getFgOrConc().equalsIgnoreCase("Fg") ? 2 : 4;
+									taskDetails.setDuration(duration);
+								} else {
 									taskDetails.setDuration((int) matchedRow.getCell(6).getNumericCellValue());
 								}
 //								System.out.println("max task id");
@@ -232,12 +227,12 @@ public class ReadExcelService {
 								formattedPrimTask = getPreOrPrimTask(primTask);
 
 							} else {
-								System.out.println(taskName+" row not found in other linked sheet...............................");
+								System.out.println(taskName+ " row not found in other linked sheet...............................");
 							}
 
 						} else {
-							if(!taskName.equalsIgnoreCase("TASK 08")) {
-					            System.out.println(taskName+" template not found.......................................................");
+							if (!taskName.equalsIgnoreCase("TASK 08")) {
+								System.out.println(taskName+ " template not found.......................................................");
 							}
 //								return "failed";
 						}
@@ -256,7 +251,7 @@ public class ReadExcelService {
 					projectClassificationRepository.save(projectClassResponse);
 					TasksDetails finaltasksDetailsResponse = taskDetailsRepository.save(tasksDetailsResponse);
 					projectClassificationTaskRepository.save(projectClassificationTasksDetails);
-					System.out.println(taskName+ " Predeccessor and Primary task insertion started");
+					System.out.println(taskName + " Predeccessor and Primary task insertion started");
 					for (String preTaskName : formattedpreTask) {
 						Optional<TaskTemplate> result = taskTemplateList.stream()
 								.filter(template -> template.getTaskName().equalsIgnoreCase(preTaskName)).findFirst();
@@ -265,7 +260,7 @@ public class ReadExcelService {
 							preTaskTemplate.setTaskTemplate(result.get());
 							preTaskTemplate.setOrganizationid(Integer.parseInt(orgId));
 							TasksDetailsPredecessorTaskTemplate preTaskResponse = predeccessorTaskDetailsRepository.save(preTaskTemplate);
-						    finaltasksDetailsResponse.getPretasksTemplates().add(preTaskResponse);
+							finaltasksDetailsResponse.getPretasksTemplates().add(preTaskResponse);
 						}
 
 					}
@@ -278,15 +273,15 @@ public class ReadExcelService {
 							primTaskTemplate.setTaskTemplate(result.get());
 							primTaskTemplate.setOrganizationid(Integer.parseInt(orgId));
 							TasksDetailsPrimaryTaskTemplate primTaskResponse = primaryTaskDetailsRepository.save(primTaskTemplate);
-						    finaltasksDetailsResponse.getTaskPrimaryTaskTemplates().add(primTaskResponse);
+							finaltasksDetailsResponse.getTaskPrimaryTaskTemplates().add(primTaskResponse);
 						}
 					}
 
 					taskDetailsRepository.save(finaltasksDetailsResponse);
-					System.out.println(taskName+ " Predeccessor and Primary task insertion completed");
+					System.out.println(taskName + " Predeccessor and Primary task insertion completed");
 					templateNo = projectClassification.getProjectClassificationNumber();
 				}
-				System.out.println(templateNo +" classification number template created succesfully.............................................");
+				System.out.println(templateNo+ " classification number template created succesfully.............................................");
 			}
 			workbook.close();
 			return "Sucesss";
@@ -346,8 +341,7 @@ public class ReadExcelService {
 		for (Row row : sheet) {
 			Cell cell = row.getCell(columnIndex);
 //			System.out.println(cell.getStringCellValue());
-			if (cell != null && cell.getCellType() == CellType.STRING
-					&& cell.getStringCellValue().equalsIgnoreCase(cellValue)) {
+			if (cell != null && cell.getCellType() == CellType.STRING && cell.getStringCellValue().equalsIgnoreCase(cellValue)) {
 				return row;
 			}
 		}
@@ -364,8 +358,6 @@ public class ReadExcelService {
 		}
 		return -1;
 	}
-
-
 
 	public String getCellValueAsString(Cell cell) {
 		if (cell == null) {
