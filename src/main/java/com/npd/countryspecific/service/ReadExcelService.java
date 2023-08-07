@@ -183,12 +183,6 @@ public class ReadExcelService {
 							isManagerialTask = false;
 							isRegTask = true;
 						} 
-						// Task 13 fg and conc duration
-						else if (columnName.equalsIgnoreCase("Y")) {
-							taskDetails.setDuration(2);
-						} else if (columnName.equalsIgnoreCase("Z")) {
-							taskDetails.setDuration(4);
-						}
 						System.out.println(taskName + " insertion started");
 //						System.out.println(taskDetails.getDuration());
 //						System.out.println(taskDescription);
@@ -211,7 +205,11 @@ public class ReadExcelService {
 								maxTaskId = maxTaskId == null ? 12108001 : maxTaskId;
 								taskDetails.setId(++maxTaskId);
 								taskDetails.setTasktemplate(taskTemplate);
-								if (!taskTemplate.getTaskName().equalsIgnoreCase("TASK 13")) {
+								// Task 13 fg and conc duration
+								if (taskTemplate.getTaskName().equalsIgnoreCase("TASK 13")) {
+									taskDetails.setDuration(taskTemplate.getFgOrConc().equalsIgnoreCase("Fg") ? 2 : 4);
+								}
+								else {
 									taskDetails.setDuration((int) matchedRow.getCell(6).getNumericCellValue());
 								}
 //								System.out.println("max task id");
