@@ -30,8 +30,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-//@Table(name="shrdnpdlookupdomainmodelproject_classification")
-@Table(name = "o4npdlookupdomainmodelproject_classification")
+@Table(name = "shrdnpdlookupdomainmodelproject_classification")
+//@Table(name = "o4npdlookupdomainmodelproject_classification")
 public class ProjectClassification {
 	@Id
 	@Column(name = "id")
@@ -65,25 +65,24 @@ public class ProjectClassification {
 
 	@Column(name = "R_PO_REGION_Id")
 	private Integer region;
-	
+
 	@Column(name = "S_ITEM_STATUS")
 	private Integer itemStatusId;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@NotFound(action = NotFoundAction.IGNORE)
-//  @JoinTable(name = "shrdnpdlookupdomainmodelproject_classificationtasks_details",
-//  joinColumns = {
-//          @JoinColumn(name = "PROJECT_CLASID83F7D33723BC5560", referencedColumnName = "Id",
-//                  nullable = false, updatable = false)},
-//  inverseJoinColumns = {
-//          @JoinColumn(name = "Tasks_Details_Id",referencedColumnName = "Id",
-//                  nullable = false, updatable = false)})
-	@JoinTable(name = "o4npdlookupdomainmodelproject_classificationtasks_details", joinColumns = {
-			@JoinColumn(name = "PROJECT_CLASID810D5EBEB9CF8AB5", referencedColumnName = "Id", nullable = false, updatable = false) }, inverseJoinColumns = {
+	@JoinTable(name = "shrdnpdlookupdomainmodelproject_classificationtasks_details", joinColumns = {
+			@JoinColumn(name = "PROJECT_CLASID83F7D33723BC5560", referencedColumnName = "Id", nullable = false, updatable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "Tasks_Details_Id", referencedColumnName = "Id", nullable = false, updatable = false) })
+//	@JoinTable(name = "o4npdlookupdomainmodelproject_classificationtasks_details", joinColumns = {
+//			@JoinColumn(name = "PROJECT_CLASID810D5EBEB9CF8AB5", referencedColumnName = "Id", nullable = false, updatable = false) }, inverseJoinColumns = {
+//					@JoinColumn(name = "Tasks_Details_Id", referencedColumnName = "Id", nullable = false, updatable = false) })
 	private Set<TasksDetails> taskDetails = new HashSet<TasksDetails>();
 
 	@OneToMany(mappedBy = "projectClassification", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	private Set<ProjectClassificationTasksDetails> projectClassificationTasksDetails = new HashSet<ProjectClassificationTasksDetails>();
+	
+	@Column(name = "s_organizationid")
+	private int organizationid;
 
 }

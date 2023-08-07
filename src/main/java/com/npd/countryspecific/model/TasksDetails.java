@@ -30,8 +30,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-//@Table(name="shrdnpdlookupdomainmodeltasks_details")
-@Table(name = "o4npdlookupdomainmodeltasks_details")
+@Table(name = "shrdnpdlookupdomainmodeltasks_details")
+//@Table(name = "o4npdlookupdomainmodeltasks_details")
 public class TasksDetails {
 	@Id
 	@Column(name = "Id")
@@ -59,30 +59,22 @@ public class TasksDetails {
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@NotFound(action = NotFoundAction.IGNORE)
-//  @JoinTable(name = "shrdnpdlookupdomainmodeltasks_detailstask_template",
-//  joinColumns = {
-//          @JoinColumn(name = "TASKS_DETAILID979B2426C2669354", referencedColumnName = "Id",
-//                  nullable = false, updatable = false)},
-//  inverseJoinColumns = {
-//          @JoinColumn(name = "Task_Template_Id",referencedColumnName = "Id",
-//                  nullable = false, updatable = false)})
-	@JoinTable(name = "o4npdlookupdomainmodeltasks_detailstask_template", joinColumns = {
-			@JoinColumn(name = "Tasks_Detailida62CFA91996C7B8B", referencedColumnName = "Id", nullable = false, updatable = false) }, inverseJoinColumns = {
+	@JoinTable(name = "shrdnpdlookupdomainmodeltasks_detailstask_template", joinColumns = {
+			@JoinColumn(name = "Tasks_Detailid979B2426C2669354", referencedColumnName = "Id", nullable = false, updatable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "Task_Template_Id", referencedColumnName = "Id", nullable = false, updatable = false) })
+//	@JoinTable(name = "o4npdlookupdomainmodeltasks_detailstask_template", joinColumns = {
+//			@JoinColumn(name = "Tasks_Detailida62CFA91996C7B8B", referencedColumnName = "Id", nullable = false, updatable = false) }, inverseJoinColumns = {
+//					@JoinColumn(name = "Task_Template_Id", referencedColumnName = "Id", nullable = false, updatable = false) })
 	private Set<TaskTemplate> predecessorTaskList = new HashSet<TaskTemplate>();
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@NotFound(action = NotFoundAction.IGNORE)
-//  @JoinTable(name = "SHRDNPDLookUpDomainModelTasks_DetailsTask_Template983",
-//  joinColumns = {
-//          @JoinColumn(name = "TASKS_DETAILID96EB29F05DE824E8", referencedColumnName = "Id",
-//                  nullable = false, updatable = false)},
-//  inverseJoinColumns = {
-//          @JoinColumn(name = "Task_Template_Id",referencedColumnName = "Id",
-//                  nullable = false, updatable = false)})
-	@JoinTable(name = "o4npdlookupdomainmodeltasks_detailstask_template391", joinColumns = {
-			@JoinColumn(name = "Tasks_DetailidA886B77B1F3E2202", referencedColumnName = "Id", nullable = false, updatable = false) }, inverseJoinColumns = {
+	@JoinTable(name = "shrdnpdlookupdomainmodeltasks_detailstask_template983", joinColumns = {
+			@JoinColumn(name = "Tasks_Detailid96EB29F05DE824E8", referencedColumnName = "Id", nullable = false, updatable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "Task_Template_Id", referencedColumnName = "Id", nullable = false, updatable = false) })
+//	@JoinTable(name = "o4npdlookupdomainmodeltasks_detailstask_template391", joinColumns = {
+//			@JoinColumn(name = "Tasks_DetailidA886B77B1F3E2202", referencedColumnName = "Id", nullable = false, updatable = false) }, inverseJoinColumns = {
+//					@JoinColumn(name = "Task_Template_Id", referencedColumnName = "Id", nullable = false, updatable = false) })
 	private Set<TaskTemplate> primaryDependentTaskList = new HashSet<TaskTemplate>();
 
 	@Column(name = "S_ITEM_STATUS")
@@ -93,5 +85,8 @@ public class TasksDetails {
 
 	@OneToMany(mappedBy = "taskDetail", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	private Set<TasksDetailsPrimaryTaskTemplate> taskPrimaryTaskTemplates = new HashSet<TasksDetailsPrimaryTaskTemplate>();
+
+	@Column(name = "s_organizationid")
+	private int organizationid;
 
 }

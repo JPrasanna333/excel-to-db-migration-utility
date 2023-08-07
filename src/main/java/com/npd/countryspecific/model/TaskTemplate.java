@@ -21,42 +21,41 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-//@Table(name="shrdnpdlookupdomainmodeltask_template")
-@Table(name="o4npdlookupdomainmodeltask_template")
+@Table(name = "shrdnpdlookupdomainmodeltask_template")
+//@Table(name="o4npdlookupdomainmodeltask_template")
 public class TaskTemplate {
 
 	@Id
 	@Column(name = "Id")
 	private Integer id;
-	
-	@Column(name="taskname")
+
+	@Column(name = "taskname")
 	private String taskName;
-	
-	@Column(name="taskdescription")
+
+	@Column(name = "taskdescription")
 	private String taskDescription;
 
-	@Column(name="defaultduration")
+	@Column(name = "defaultduration")
 	private Integer defaultDuration;
-	
-	@Column(name="ischeckpointtask")
+
+	@Column(name = "ischeckpointtask")
 	private Boolean isCheckPointTask;
-	
-	@Column(name="isactive")
+
+	@Column(name = "isactive")
 	private Boolean isActive;
-	
-	@Column(name="fgorconc")
+
+	@Column(name = "fgorconc")
 	private String fgOrConc;
 
-	@Column(name="isregistrationtask")
+	@Column(name = "isregistrationtask")
 	private Boolean isRegistrationTask;
-	
-	@Column(name="ismanagerialtask")
-	private Boolean isManagerialTask;
-	
-	@OneToMany(mappedBy = "taskTemplate", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    private Set<TasksDetailsPredecessorTaskTemplate> tasksDetailsTemplates = new HashSet<TasksDetailsPredecessorTaskTemplate>();
-	
-	@OneToMany(mappedBy = "taskTemplate", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    private Set<TasksDetailsPrimaryTaskTemplate> taskPrimaryTaskTemplates = new HashSet<TasksDetailsPrimaryTaskTemplate>();
-}
 
+	@Column(name = "ismanagerialtask")
+	private Boolean isManagerialTask;
+
+	@OneToMany(mappedBy = "taskTemplate", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	private Set<TasksDetailsPredecessorTaskTemplate> tasksDetailsTemplates = new HashSet<TasksDetailsPredecessorTaskTemplate>();
+
+	@OneToMany(mappedBy = "taskTemplate", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	private Set<TasksDetailsPrimaryTaskTemplate> taskPrimaryTaskTemplates = new HashSet<TasksDetailsPrimaryTaskTemplate>();
+}

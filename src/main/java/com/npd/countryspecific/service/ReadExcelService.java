@@ -53,6 +53,10 @@ public class ReadExcelService {
 
 	@Value("${excel.task.endColumn}")
 	private String taskEndColumn;
+	
+	@Value("${com.monster.npd.org.id}")
+	private String orgId;
+	
 
 	@Autowired
 	private Environment env;
@@ -98,7 +102,7 @@ public class ReadExcelService {
 
 			for (int rowIndex = startRow - 1; rowIndex < endRow; rowIndex++) {
 				Sheet sheet = workbook.getSheetAt(0);
-				++maxProjectClassificationId;
+				maxProjectClassificationId = maxProjectClassificationId == null ? 49175 : maxProjectClassificationId;
 				String regionName = "";
 				ProjectClassification projectClassification = new ProjectClassification();
 				TasksDetails taskDetails = new TasksDetails();
@@ -106,14 +110,14 @@ public class ReadExcelService {
 				ProjectClassificationTasksDetails projectClassificationTasksDetails = new ProjectClassificationTasksDetails();
 				TasksDetailsPredecessorTaskTemplate preTaskTemplate = new TasksDetailsPredecessorTaskTemplate();
 				TasksDetailsPrimaryTaskTemplate primTaskTemplate = new TasksDetailsPrimaryTaskTemplate();
-
+				projectClassification.setId(++maxProjectClassificationId);
 				Row row = sheet.getRow(rowIndex);
 				for (int columnIndex = startColumnIndex; columnIndex <= endColumnIndex; columnIndex++) {
 					Cell cellValue = row.getCell(columnIndex);
 					String columnName = CellReference.convertNumToColString(columnIndex);
-					projectClassification.setId(maxProjectClassificationId);
 					projectClassification.setRegion(1);//Always EMEA in table
 					projectClassification.setItemStatusId(1);
+					projectClassification.setOrganizationid(Integer.parseInt(orgId));
 					
 					if (columnName.equalsIgnoreCase("A")) {
 						regionName = cellValue.getStringCellValue();// for retrieving sheet name
@@ -204,7 +208,7 @@ public class ReadExcelService {
 //					            System.out.println(taskTemplate.toString());
 							Row matchedRow = getRowByCellValue(sheet, taskName, "Task Name");
 							if (matchedRow != null) {
-								maxTaskId = maxTaskId == null ? 0 : maxTaskId;
+								maxTaskId = maxTaskId == null ? 12108001 : maxTaskId;
 								taskDetails.setId(++maxTaskId);
 								taskDetails.setTasktemplate(taskTemplate);
 								if (!taskTemplate.getTaskName().equalsIgnoreCase("TASK 13")) {
@@ -221,21 +225,24 @@ public class ReadExcelService {
 								String rmRoleName = matchedRow.getCell(5).getStringCellValue().replace(" ", "");
 								taskDetails.setTaskOwnerId(Integer.parseInt(getRoleId(taskOwnerName)));
 								taskDetails.setRmRoleId(Integer.parseInt(getRoleId(rmRoleName)));
+								taskDetails.setOrganizationid(Integer.parseInt(orgId));
 								String preTask = getCellValueAsString(matchedRow.getCell(2));
 								String primTask = getCellValueAsString(matchedRow.getCell(3));
 								formattedpreTask = getPreOrPrimTask(preTask);
 								formattedPrimTask = getPreOrPrimTask(primTask);
 
 							} else {
-								System.out.println(taskName+" row not found in other linked sheet");
+								System.out.println(taskName+" row not found in other linked sheet...............................");
 							}
 
 						} else {
-					            System.out.println(taskName+" template not found.");
-								return "failed";
+							if(!taskName.equalsIgnoreCase("TASK 08")) {
+					            System.out.println(taskName+" template not found.......................................................");
+							}
+//								return "failed";
 						}
 					} else {
-						System.out.println("Null cell in other sheet");
+//						System.out.println("Null cell in other sheet while linking.........................................");
 //						return "failed";
 
 					}
@@ -243,6 +250,7 @@ public class ReadExcelService {
 					TasksDetails tasksDetailsResponse = taskDetailsRepository.save(taskDetails);
 					projectClassificationTasksDetails.setProjectClassification(projectClassResponse);
 					projectClassificationTasksDetails.setTaskDetails(tasksDetailsResponse);
+					projectClassificationTasksDetails.setOrganizationid(Integer.parseInt(orgId));
 					projectClassResponse.getProjectClassificationTasksDetails().add(projectClassificationTasksDetails);
 					tasksDetailsResponse.getProjectClassificationTasksDetails().add(projectClassificationTasksDetails);
 					projectClassificationRepository.save(projectClassResponse);
@@ -255,6 +263,7 @@ public class ReadExcelService {
 						if (result.isPresent()) {
 							preTaskTemplate.setTaskDetail(finaltasksDetailsResponse);
 							preTaskTemplate.setTaskTemplate(result.get());
+							preTaskTemplate.setOrganizationid(Integer.parseInt(orgId));
 							TasksDetailsPredecessorTaskTemplate preTaskResponse = predeccessorTaskDetailsRepository.save(preTaskTemplate);
 						    finaltasksDetailsResponse.getPretasksTemplates().add(preTaskResponse);
 						}
@@ -267,6 +276,7 @@ public class ReadExcelService {
 						if (result.isPresent()) {
 							primTaskTemplate.setTaskDetail(finaltasksDetailsResponse);
 							primTaskTemplate.setTaskTemplate(result.get());
+							primTaskTemplate.setOrganizationid(Integer.parseInt(orgId));
 							TasksDetailsPrimaryTaskTemplate primTaskResponse = primaryTaskDetailsRepository.save(primTaskTemplate);
 						    finaltasksDetailsResponse.getTaskPrimaryTaskTemplates().add(primTaskResponse);
 						}
@@ -276,7 +286,7 @@ public class ReadExcelService {
 					System.out.println(taskName+ " Predeccessor and Primary task insertion completed");
 					templateNo = projectClassification.getProjectClassificationNumber();
 				}
-				System.out.println(templateNo +" Classification number template created succesfully");
+				System.out.println(templateNo +" classification number template created succesfully.............................................");
 			}
 			workbook.close();
 			return "Sucesss";
