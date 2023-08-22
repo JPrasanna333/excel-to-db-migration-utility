@@ -81,9 +81,7 @@ public class UtilityController {
 //		projectTaskClassificationUpdateService.generateProjectTaskClassUpdateStatements(filePath,submissionTaskTableName);
 //		requestClassificationUpdateService.generateSqlUpdateStatements(filePath, submissionRequestTableName);
 //		requestReindexService.generateReindexInsertScripts(filePath,requestReindexLogTableName);
-//		projectNewFieldsUpdateService.generateProjectNewFieldsUpdateScripts(filePath, submissionProjectTableName);
-		projectReindexService.generateProjectReindexScripts(filePath, projectItemId);
-		taskReindexService.generateTaskReindexScripts(filePath, taskItemId);
+		projectNewFieldsUpdateService.generateProjectNewFieldsUpdateScripts(filePath, submissionProjectTableName);
 
 	}
 

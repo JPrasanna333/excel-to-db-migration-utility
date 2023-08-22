@@ -216,6 +216,12 @@ public class CountrySpecificUtilityService {
 //								System.out.println(taskDetails.getId());
 
 								taskDetails.setTaskSequence((int) matchedRow.getCell(0).getNumericCellValue());
+								if(regionName.equalsIgnoreCase("EMEA")) {
+									taskDetails.setOrderOfExecution((int) matchedRow.getCell(0).getNumericCellValue());
+								}
+								else if(regionName.equalsIgnoreCase("UAE")) {
+									taskDetails.setOrderOfExecution((int) matchedRow.getCell(9).getNumericCellValue());
+								}
 //								System.out.println("sequenceCheck");
 //								System.out.println(taskDetails.getTaskSequence());
 								taskDetails.setItemStatusId(1);

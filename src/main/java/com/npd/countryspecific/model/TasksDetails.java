@@ -44,6 +44,9 @@ public class TasksDetails {
 
 	@Column(name = "duration")
 	private Integer duration;
+	
+	@Column(name = "orderofexecution")
+	private Integer orderOfExecution;
 
 	@Column(name = "tasksequence")
 	private Integer taskSequence;
