@@ -33,7 +33,7 @@ import com.npd.countryspecific.repository.TaskDetailsRepository;
 import com.npd.countryspecific.repository.TaskTemplateRepository;
 
 @Service
-public class ReadExcelService {
+public class CountrySpecificUtilityService {
 	@Value("${excel.startRow}")
 	private int startRow;
 
@@ -179,7 +179,7 @@ public class ReadExcelService {
 						} else if (cellValue.equals("Y")) {
 							isManagerialTask = false;
 							isRegTask = true;
-						}
+						} 
 
 						System.out.println(taskName + " insertion started");
 //						System.out.println(taskDetails.getDuration());
@@ -204,15 +204,21 @@ public class ReadExcelService {
 								taskDetails.setTasktemplate(taskTemplate);
 								// Task 13 fg and conc duration
 								if (taskTemplate.getTaskName().equalsIgnoreCase("TASK 13")) {
-									int duration = taskTemplate.getFgOrConc().equalsIgnoreCase("Fg") ? 2 : 4;
-									taskDetails.setDuration(duration);
-								} else {
+									taskDetails.setDuration(taskTemplate.getFgOrConc().equalsIgnoreCase("Fg") ? 2 : 4);
+								}
+								else {
 									taskDetails.setDuration((int) matchedRow.getCell(6).getNumericCellValue());
 								}
 //								System.out.println("max task id");
 //								System.out.println(taskDetails.getId());
 
 								taskDetails.setTaskSequence((int) matchedRow.getCell(0).getNumericCellValue());
+								if(regionName.equalsIgnoreCase("EMEA")) {
+									taskDetails.setOrderOfExecution((int) matchedRow.getCell(0).getNumericCellValue());
+								}
+								else if(regionName.equalsIgnoreCase("UAE")) {
+									taskDetails.setOrderOfExecution((int) matchedRow.getCell(9).getNumericCellValue());
+								}
 //								System.out.println("sequenceCheck");
 //								System.out.println(taskDetails.getTaskSequence());
 								taskDetails.setItemStatusId(1);
@@ -289,24 +295,34 @@ public class ReadExcelService {
 		}
 	}
 
+	
 	private String[] getPreOrPrimTask(String tasks) {
-		String[] values = tasks.split(",");
-		String[] formattedValues = new String[values.length];
+	    String[] values = tasks.split(",");
+	    String[] formattedValues = new String[values.length];
 
-		for (int i = 0; i < values.length; i++) {
-			String trimmedValue = values[i].trim();
-			if (!trimmedValue.isEmpty()) {
-				try {
-					int num = Integer.parseInt(trimmedValue);
-					formattedValues[i] = "TASK " + String.format("%02d", num);
-				} catch (NumberFormatException e) {
-					formattedValues[i] = trimmedValue;
-				}
-			}
-		}
+	    for (int i = 0; i < values.length; i++) {
+	        String trimmedValue = values[i].trim();
+	        if (!trimmedValue.isEmpty()) {
+	            if (trimmedValue.toUpperCase().contentEquals("CP")) { // Check if the value contains CPs
+	                try {
+	                    int num = Integer.parseInt(trimmedValue);
+	                    formattedValues[i] = "TASK " + String.format("%02d", num);
+	                } catch (NumberFormatException e) {
+	                    formattedValues[i] = "TASK " + trimmedValue;
+	                }
+	            } else {
+	                formattedValues[i] = trimmedValue; // Treat CP1 as CP1"
+	            }
+	        }
+	    }
 
-		return formattedValues;
+	    return formattedValues;
 	}
+
+
+
+
+
 
 	private String getRoleId(String role) {
 		switch (role.toLowerCase()) {
