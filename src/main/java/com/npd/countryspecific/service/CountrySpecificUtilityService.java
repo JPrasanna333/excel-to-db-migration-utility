@@ -35,7 +35,7 @@ import com.npd.countryspecific.repository.TaskDetailsRepository;
 import com.npd.countryspecific.repository.TaskTemplateRepository;
 
 @Service
-public class ReadExcelService {
+public class CountrySpecificUtilityService {
 	@Value("${excel.startRow}")
 	private int startRow;
 
@@ -292,24 +292,34 @@ public class ReadExcelService {
 		}
 	}
 
+	
 	private String[] getPreOrPrimTask(String tasks) {
-		String[] values = tasks.split(",");
-		String[] formattedValues = new String[values.length];
+	    String[] values = tasks.split(",");
+	    String[] formattedValues = new String[values.length];
 
-		for (int i = 0; i < values.length; i++) {
-			String trimmedValue = values[i].trim();
-			if (!trimmedValue.isEmpty()) {
-				try {
-					int num = Integer.parseInt(trimmedValue);
-					formattedValues[i] = "TASK " + String.format("%02d", num);
-				} catch (NumberFormatException e) {
-					formattedValues[i] = trimmedValue;
-				}
-			}
-		}
+	    for (int i = 0; i < values.length; i++) {
+	        String trimmedValue = values[i].trim();
+	        if (!trimmedValue.isEmpty()) {
+	            if (trimmedValue.toUpperCase().contentEquals("CP")) { // Check if the value contains CPs
+	                try {
+	                    int num = Integer.parseInt(trimmedValue);
+	                    formattedValues[i] = "TASK " + String.format("%02d", num);
+	                } catch (NumberFormatException e) {
+	                    formattedValues[i] = "TASK " + trimmedValue;
+	                }
+	            } else {
+	                formattedValues[i] = trimmedValue; // Treat CP1 as CP1"
+	            }
+	        }
+	    }
 
-		return formattedValues;
+	    return formattedValues;
 	}
+
+
+
+
+
 
 	private String getRoleId(String role) {
 		switch (role.toLowerCase()) {
