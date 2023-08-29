@@ -11,17 +11,19 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.npd.countryspecific.model.RequestBodyData;
 
 @Service
 public class TaskReindexService {
 
-	public void generateTaskReindexScripts(String filePath, String taskItemId) throws Exception {
+	public void generateTaskReindexScripts(String filePath, String taskItemId, RequestBodyData taskData) throws Exception {
 		try (FileInputStream fis = new FileInputStream(filePath)) {
 			Workbook workbook = WorkbookFactory.create(fis);
 			Sheet taskReindexingSheet = workbook.getSheet("TaskReindexing");
 			boolean isFirstJson = true;
-			int totalCount = 0;
-			for (int rowIndex = 1; rowIndex <= taskReindexingSheet.getLastRowNum(); rowIndex++) {
+//			System.out.println(taskData.getstartValue());
+//			System.out.println(taskData.getendValue());
+			for (int rowIndex = taskData.getstartValue(); rowIndex < taskData.getendValue(); rowIndex++) {
 				Row row = taskReindexingSheet.getRow(rowIndex);
 				String itemId = row.getCell(0) != null
 						? taskItemId + String.valueOf((long) row.getCell(0).getNumericCellValue())
@@ -73,11 +75,9 @@ public class TaskReindexService {
 					} else {
 						System.out.print("," + updateSchema);
 					}
-					++totalCount;
 				}
 
 			}
-//			System.out.println("TotalCount "+totalCount);
 			workbook.close();
 		}
 
