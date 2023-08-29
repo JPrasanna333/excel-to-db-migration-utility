@@ -5,8 +5,10 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.npd.countryspecific.model.RequestBodyData;
 import com.npd.countryspecific.service.CountrySpecificUtilityService;
 import com.npd.countryspecific.service.ProjectNewFieldsUpdateService;
 import com.npd.countryspecific.service.ProjectReindexService;
@@ -77,22 +79,22 @@ public class UtilityController {
 
 	@GetMapping("/generateScripts")
 	public void generateScripts() throws Exception {
-//		projectTaskClassificationUpdateService.generateProjectClassUpdateStatements(filePath,submissionProjectTableName);
+//		projectTaskClassificationUpdateService.generateProjectTaskClassUpdateStatements(filePath,submissionProjectTableName);
 //		projectTaskClassificationUpdateService.generateProjectTaskClassUpdateStatements(filePath,submissionTaskTableName);
 //		requestClassificationUpdateService.generateSqlUpdateStatements(filePath, submissionRequestTableName);
-//		requestReindexService.generateReindexInsertScripts(filePath,requestReindexLogTableName);
-		projectNewFieldsUpdateService.generateProjectNewFieldsUpdateScripts(filePath, submissionProjectTableName);
+		requestReindexService.generateReindexInsertScripts(filePath,requestReindexLogTableName);
+//		projectNewFieldsUpdateService.generateProjectNewFieldsUpdateScripts(filePath, submissionProjectTableName);
 
 	}
 
 	@GetMapping("/generateProjectReindexScripts")
-	public void generateProjectReindexScripts() throws Exception {
-		projectReindexService.generateProjectReindexScripts(filePath, projectItemId);
+	public void generateProjectReindexScripts(@RequestBody(required = true)RequestBodyData projectData) throws Exception {
+		projectReindexService.generateProjectReindexScripts(filePath, projectItemId,projectData);
 	}
 
 	@GetMapping("/generateTaskReindexScripts")
-	public void generateTaskReindexScripts() throws Exception {
-		taskReindexService.generateTaskReindexScripts(filePath, taskItemId);
+	public void generateTaskReindexScripts(@RequestBody(required = true)RequestBodyData taskData) throws Exception {
+		taskReindexService.generateTaskReindexScripts(filePath, taskItemId,taskData);
 	}
 
 }
