@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -79,7 +81,7 @@ public class CountrySpecificUtilityService {
 	@Autowired
 	private PrimaryTaskDetailsRepository primaryTaskDetailsRepository;
 
-//	@Transactional
+	@Transactional
 	public String readAndMigrateExcelData(String filePath) throws IOException {
 
 		try (FileInputStream fis = new FileInputStream(filePath)) {
@@ -99,7 +101,7 @@ public class CountrySpecificUtilityService {
 
 			for (int rowIndex = startRow - 1; rowIndex < endRow; rowIndex++) {
 				Sheet sheet = workbook.getSheetAt(0);
-				maxProjectClassificationId = maxProjectClassificationId == null ? 49175 : maxProjectClassificationId;
+				maxProjectClassificationId = maxProjectClassificationId == null ? 49188 : maxProjectClassificationId;
 				String regionName = "";
 				ProjectClassification projectClassification = new ProjectClassification();
 				TasksDetails taskDetails = new TasksDetails();
@@ -107,7 +109,7 @@ public class CountrySpecificUtilityService {
 				ProjectClassificationTasksDetails projectClassificationTasksDetails = new ProjectClassificationTasksDetails();
 				TasksDetailsPredecessorTaskTemplate preTaskTemplate = new TasksDetailsPredecessorTaskTemplate();
 				TasksDetailsPrimaryTaskTemplate primTaskTemplate = new TasksDetailsPrimaryTaskTemplate();
-				projectClassification.setId(++maxProjectClassificationId);
+				projectClassification.setId(maxProjectClassificationId + 13);
 				Row row = sheet.getRow(rowIndex);
 				for (int columnIndex = startColumnIndex; columnIndex <= endColumnIndex; columnIndex++) {
 					Cell cellValue = row.getCell(columnIndex);
@@ -123,30 +125,35 @@ public class CountrySpecificUtilityService {
 						projectClassification.setProjectType(projectType);
 					} else if (columnName.equalsIgnoreCase("C")) {
 						projectClassification.setProjectClassificationNumber(String.valueOf((int) cellValue.getNumericCellValue()));
-					} else if (columnName.equalsIgnoreCase("H")) {
+					} else if (columnName.equalsIgnoreCase("E")) {
 //						System.out.println(cellValue.getStringCellValue());
 						projectClassification.setProjectClassificationDescription(cellValue.getStringCellValue());
-					} else if (columnName.equalsIgnoreCase("I")) {
+					} else if (columnName.equalsIgnoreCase("F")) {
 						Boolean value = cellValue.getStringCellValue().equalsIgnoreCase("Y") ? true : false;
 //						System.out.println(value);
 						projectClassification.setNewFg(value);
-					} else if (columnName.equalsIgnoreCase("J")) {
+					} else if (columnName.equalsIgnoreCase("G")) {
 						Boolean value = cellValue.getStringCellValue().equalsIgnoreCase("Y") ? true : false;
 //						System.out.println(value);
 						projectClassification.setNewRd(value);
-					} else if (columnName.equalsIgnoreCase("K")) {
+					} else if (columnName.equalsIgnoreCase("H")) {
 						Boolean value = cellValue.getStringCellValue().equalsIgnoreCase("Y") ? true : false;
 //						System.out.println(value);
 						projectClassification.setNewHbc(value);
-					} else if (columnName.equalsIgnoreCase("L")) {
+					} else if (columnName.equalsIgnoreCase("I")) {
 						Boolean value = cellValue.getStringCellValue().equalsIgnoreCase("Y") ? true : false;
 //						System.out.println(value);
 						projectClassification.setPrimaryPackaging(value);
-					} else if (columnName.equalsIgnoreCase("M")) {
+					} else if (columnName.equalsIgnoreCase("J")) {
 						Boolean value = cellValue.getStringCellValue().equalsIgnoreCase("Y") ? true : false;
 //						System.out.println(value);
 						projectClassification.setSecondaryPackaging(value);
 					}
+//					else if (columnName.equalsIgnoreCase("K")) {
+//						Boolean value = cellValue.getStringCellValue().equalsIgnoreCase("Y") ? true : false;
+//					change lead Formula column name
+//						projectClassification.setSecondaryPackaging(value);
+//					}
 				}
 
 				// task iteration
@@ -204,16 +211,19 @@ public class CountrySpecificUtilityService {
 								taskDetails.setTasktemplate(taskTemplate);
 								// Task 13 fg and conc duration
 								if (taskTemplate.getTaskName().equalsIgnoreCase("TASK 13")) {
-									taskDetails.setDuration(taskTemplate.getFgOrConc().equalsIgnoreCase("Fg") ? 2 : 4);
-								}
-								else {
+									if (regionName.equalsIgnoreCase("EMEA")) {
+										taskDetails.setDuration(taskTemplate.getFgOrConc().equalsIgnoreCase("Fg") ? 2 : 4);
+									} else {
+										taskDetails.setDuration(taskTemplate.getFgOrConc().equalsIgnoreCase("Fg") ? 4 : 4);
+									}
+								} else {
 									taskDetails.setDuration((int) matchedRow.getCell(6).getNumericCellValue());
 								}
 //								System.out.println("max task id");
 //								System.out.println(taskDetails.getId());
 
 								taskDetails.setTaskSequence((int) matchedRow.getCell(0).getNumericCellValue());
-								if(regionName.equalsIgnoreCase("EMEA")) {
+								if(regionName.equalsIgnoreCase("EMEA") || regionName.equalsIgnoreCase("LEAD")) {
 									taskDetails.setOrderOfExecution((int) matchedRow.getCell(0).getNumericCellValue());
 								}
 								else if(regionName.equalsIgnoreCase("UAE")) {
@@ -243,7 +253,7 @@ public class CountrySpecificUtilityService {
 //								return "failed";
 						}
 					} else {
-//						System.out.println("Null cell in other sheet while linking.........................................");
+						System.out.println("Null cell in other sheet while linking.........................................");
 //						return "failed";
 
 					}
@@ -342,6 +352,9 @@ public class CountrySpecificUtilityService {
 			return this.env.getProperty("com.monster.role.secondary.aw.specialist");
 		case "regulatoryaffairs":
 			return this.env.getProperty("com.monster.role.regulatory.affairs");
+		case "fpms":
+			return this.env.getProperty("com.monster.role.fpms");
+
 		default:
 			throw new IllegalArgumentException("Invalid role: " + role);
 		}
